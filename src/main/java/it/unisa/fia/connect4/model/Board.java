@@ -40,7 +40,7 @@ public class Board {
 
 
     public int[][] getBoard() {
-        return board.clone();
+        return board;
     }
 
     public int getRows() {
