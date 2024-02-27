@@ -12,10 +12,8 @@ public class MinimaxAI implements AIPlayer{
     @Override
     public Move generateMove(Board board, int maxPlayer) {
 
-        //TODO: controlli che devono essere inseriti successivamenta nella classe Game
         if(board.getNextPlayer() != maxPlayer || board.isGameFinished())
             return null;
-
 
         Move bestMove = null;
         double bestScore = Integer.MIN_VALUE;
@@ -44,7 +42,7 @@ public class MinimaxAI implements AIPlayer{
 
     private double maxValue(Board board, int maxPlayer, int depth){
 
-        if(cutoffTest(board, maxPlayer, depth))
+        if(cutoffTest(board, depth))
             return Evaluator.evaluation(board, maxPlayer);
 
         List<Move> moves = board.generateNextMoves();
@@ -68,7 +66,7 @@ public class MinimaxAI implements AIPlayer{
 
     private double minValue(Board board, int maxPlayer, int depth){
 
-        if(cutoffTest(board, maxPlayer, depth))
+        if(cutoffTest(board, depth))
             return Evaluator.evaluation(board, maxPlayer);
 
         List<Move> moves = board.generateNextMoves();
@@ -91,7 +89,7 @@ public class MinimaxAI implements AIPlayer{
     }
 
 
-    private boolean cutoffTest(Board board, int maxPlayer, int depth){
+    private boolean cutoffTest(Board board, int depth){
 
         return depth <= 1 || board.isGameFinished();
 
