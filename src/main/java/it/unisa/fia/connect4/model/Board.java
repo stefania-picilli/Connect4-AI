@@ -345,9 +345,9 @@ public class Board {
 
         printTopMessage();
 
-        for(int i = 0; i < 6; i++) {
+        for(int i = 0; i < rows; i++) {
             System.out.println();
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < columns; j++) {
                 System.out.print(" | ");
 
                 if(board[i][j] == Board.PLAYER_A)
@@ -363,19 +363,20 @@ public class Board {
 
         System.out.println();
 
-        for (int j = 0; j < 7; j++) {
+        for (int j = 0; j < columns; j++) {
             System.out.print(" | ");
             System.out.print("-");
         }
 
         System.out.println();
 
-        for (int j = 0; j < 7; j++) {
+        for (int j = 0; j < columns; j++) {
             System.out.print(" | ");
             System.out.print(j);
         }
 
-        System.out.println("\n");
+        System.out.println();
+
 
     }
 
@@ -383,7 +384,7 @@ public class Board {
 
         if(!isGameFinished()){
 
-            System.out.print("\n\nGame = NOT FINISHED");
+            System.out.print("\nGame = NOT FINISHED");
             System.out.print("  /  ");
             System.out.println("Next move = " + getPiece(nextPlayer));
 
@@ -391,13 +392,13 @@ public class Board {
 
             if(winner == NONE){
 
-                System.out.print("\n\nGame = FINISHED");
+                System.out.print("\nGame = FINISHED");
                 System.out.print("  /  ");
                 System.out.println("TIE");
 
             }else {
 
-                System.out.print("\n\nGame = FINISHED");
+                System.out.print("\nGame = FINISHED");
                 System.out.print("  /  ");
                 System.out.println("WINNER = " + getPiece(winner));
 

@@ -7,4 +7,6 @@ public interface AIPlayer {
 
     public Move generateMove(Board board, int player);
 
+    public int getSearchDepth();
+
 }
