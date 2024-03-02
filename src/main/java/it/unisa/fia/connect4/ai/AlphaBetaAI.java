@@ -5,12 +5,13 @@ import it.unisa.fia.connect4.model.Move;
 
 import java.util.List;
 
-public class MinimaxAI implements AIPlayer{
+public class AlphaBetaAI implements AIPlayer{
 
-    //private final static int DEPTH = 8;
+    //private final static int DEPTH = 10;
+
     private int searchDepth;
 
-    public MinimaxAI(int searchDepth) {
+    public AlphaBetaAI(int searchDepth) {
         this.searchDepth = searchDepth;
     }
 
@@ -22,12 +23,15 @@ public class MinimaxAI implements AIPlayer{
 
         Move bestMove = null;
         double bestScore = Integer.MIN_VALUE;
+        double alpha = Integer.MIN_VALUE;
+        double beta = Integer.MAX_VALUE;
+
         List<Move> moves = board.generateNextMoves();
 
         for(Move move : moves){
 
             board.makeMove(move);
-            double score = minValue(board, maxPlayer, searchDepth - 1);
+            double score = minValue(board, maxPlayer, searchDepth - 1, alpha, beta);
 
             if(score > bestScore) {
 
@@ -38,6 +42,12 @@ public class MinimaxAI implements AIPlayer{
 
             board.undoLastMove(move);
 
+            if(bestScore >= beta)
+                return bestMove;
+
+            if(bestScore > alpha)
+                alpha = bestScore;
+
         }
 
         return bestMove;
@@ -45,7 +55,7 @@ public class MinimaxAI implements AIPlayer{
     }
 
 
-    private double maxValue(Board board, int maxPlayer, int depth){
+    private double maxValue(Board board, int maxPlayer, int depth, double alpha, double beta){
 
         if(cutoffTest(board, depth))
             return Evaluator.evaluation(board, maxPlayer);
@@ -56,12 +66,18 @@ public class MinimaxAI implements AIPlayer{
         for(Move move : moves){
 
             board.makeMove(move);
-            double score = minValue(board, maxPlayer, depth - 1);
+            double score = minValue(board, maxPlayer, depth - 1, alpha, beta);
 
             if(score > maxScore)
                 maxScore = score;
 
             board.undoLastMove(move);
+
+            if(maxScore > alpha)
+                alpha = maxScore;
+
+            if(maxScore >= beta)
+                return maxScore;
 
         }
 
@@ -69,7 +85,7 @@ public class MinimaxAI implements AIPlayer{
 
     }
 
-    private double minValue(Board board, int maxPlayer, int depth){
+    private double minValue(Board board, int maxPlayer, int depth, double alpha, double beta){
 
         if(cutoffTest(board, depth))
             return Evaluator.evaluation(board, maxPlayer);
@@ -80,12 +96,19 @@ public class MinimaxAI implements AIPlayer{
         for(Move move : moves){
 
             board.makeMove(move);
-            double score = maxValue(board, maxPlayer, depth - 1);
+            double score = maxValue(board, maxPlayer, depth - 1, alpha, beta);
 
             if(score < minScore)
                 minScore = score;
 
             board.undoLastMove(move);
+
+            if(minScore < beta)
+                beta = minScore;
+
+            if(minScore <= alpha)
+                return minScore;
+
 
         }
 

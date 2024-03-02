@@ -7,8 +7,12 @@ import java.util.List;
 
 public class Evaluator {
 
-    private static final int ONE_DISC_VALUE = 10;
+    /*private static final int ONE_DISC_VALUE = 10;
     private static final int TWO_DISC_VALUE = 40;
+    private static final int THREE_DISC_VALUE = 200;*/
+
+    private static final int ONE_DISC_VALUE = 10;
+    private static final int TWO_DISC_VALUE = 50;
     private static final int THREE_DISC_VALUE = 200;
 
     public static double evaluation(Board board, int maxPlayer){

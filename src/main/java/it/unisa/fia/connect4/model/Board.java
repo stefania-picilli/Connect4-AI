@@ -10,6 +10,9 @@ public class Board {
     public static final int PLAYER_B = 2;
     public static final int NONE = 0;
 
+    public static final String PLAYER_A_PIECE = "W";
+    public static final String PLAYER_B_PIECE = "0";
+
 
     private int[][] board;
     private int nextPlayer;
@@ -77,11 +80,11 @@ public class Board {
         if(gameFinished)
             return false;
 
+        if(!isValidMove(move))
+            return false;
+
         int player = move.getPlayer();
         int column = move.getColumn();
-
-        if(!isValidMove(player, column))
-            return false;
 
         int i = nextDropPosition[column];
         int j = column;
@@ -106,7 +109,13 @@ public class Board {
 
     }
 
-    private boolean isValidMove(int player, int column){
+    private boolean isValidMove(Move move){
+
+        if(move == null)
+            return false;
+
+        int player = move.getPlayer();
+        int column = move.getColumn();
 
         if(player != nextPlayer)
             return false;
@@ -331,6 +340,85 @@ public class Board {
 
     }
 
+
+    public void printBoard(){
+
+        printTopMessage();
+
+        for(int i = 0; i < 6; i++) {
+            System.out.println();
+            for (int j = 0; j < 7; j++) {
+                System.out.print(" | ");
+
+                if(board[i][j] == Board.PLAYER_A)
+                    System.out.print("W");
+                else if(board[i][j] == Board.PLAYER_B)
+                    System.out.print("O");
+                else
+                    System.out.print(" ");
+
+            }
+
+        }
+
+        System.out.println();
+
+        for (int j = 0; j < 7; j++) {
+            System.out.print(" | ");
+            System.out.print("-");
+        }
+
+        System.out.println();
+
+        for (int j = 0; j < 7; j++) {
+            System.out.print(" | ");
+            System.out.print(j);
+        }
+
+        System.out.println("\n");
+
+    }
+
+    private void printTopMessage(){
+
+        if(!isGameFinished()){
+
+            System.out.print("\n\nGame = NOT FINISHED");
+            System.out.print("  /  ");
+            System.out.println("Next move = " + getPiece(nextPlayer));
+
+        }else{
+
+            if(winner == NONE){
+
+                System.out.print("\n\nGame = FINISHED");
+                System.out.print("  /  ");
+                System.out.println("TIE");
+
+            }else {
+
+                System.out.print("\n\nGame = FINISHED");
+                System.out.print("  /  ");
+                System.out.println("WINNER = " + getPiece(winner));
+
+            }
+
+
+        }
+
+    }
+
+    private String getPiece(int player){
+
+        if(player == PLAYER_A)
+            return PLAYER_A_PIECE;
+
+        if(player == PLAYER_B)
+            return PLAYER_B_PIECE;
+
+        return " ";
+
+    }
 
     @Override
     public String toString() {
