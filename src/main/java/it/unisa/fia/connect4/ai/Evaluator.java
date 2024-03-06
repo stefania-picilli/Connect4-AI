@@ -11,9 +11,9 @@ public class Evaluator {
     private static final int TWO_DISC_VALUE = 40;
     private static final int THREE_DISC_VALUE = 200;*/
 
-    private static final int ONE_DISC_VALUE = 10;
-    private static final int TWO_DISC_VALUE = 50;
-    private static final int THREE_DISC_VALUE = 200;
+    public static final int ONE_DISC_VALUE = 10;
+    public static final int TWO_DISC_VALUE = 50;
+    public static final int THREE_DISC_VALUE = 200;
 
     public static double evaluation(Board board, int maxPlayer){
 
@@ -188,6 +188,15 @@ public class Evaluator {
     }
 
 
+    public static double evaluateMove(Board board, Move move){
+
+        int player = move.getPlayer();
+        int j = move.getColumn();
+        int i = board.getNextDropPosition()[j];
+
+        return verticalValue(board, player, i, j) + horizontalValue(board, player, i, j) + diagonalValue(board, player, i, j);
+
+    }
 
 
     private static int countValue(int count){
