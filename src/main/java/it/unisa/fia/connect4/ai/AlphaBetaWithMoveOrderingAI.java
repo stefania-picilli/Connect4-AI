@@ -15,38 +15,85 @@ public class AlphaBetaWithMoveOrderingAI implements AIPlayer{
         this.searchDepth = searchDepth;
     }
 
+    @Override
     public Move generateMove(Board board, int maxPlayer) {
 
         if(board.getNextPlayer() != maxPlayer || board.isGameFinished())
             return null;
 
-        Move bestMove = null;
-        double bestScore = Integer.MIN_VALUE;
         double alpha = Integer.MIN_VALUE;
         double beta = Integer.MAX_VALUE;
 
-        List<Move> moves = board.generateNextMoves();
-        List<ScoredMove> sortedMoves = sortMoves(board, moves);
+        ScoredMove bestMove =  maxValue(board, maxPlayer, searchDepth - 1,  alpha, beta);
+        return bestMove.getMove();
+
+
+
+    }
+
+
+    private ScoredMove maxValue(Board board, int maxPlayer, int depth, double alpha, double beta){
+
+        if(cutoffTest(board, depth))
+            return new ScoredMove(null, Evaluator.evaluation(board, maxPlayer));
+
+        List<ScoredMove> sortedMoves = sortMoves(board, board.generateNextMoves());
+
+        double maxScore = Integer.MIN_VALUE;
+        ScoredMove bestMove = new ScoredMove(null, maxScore);
 
         for(ScoredMove move : sortedMoves){
 
             board.makeMove(move.getMove());
-            double score = minValue(board, maxPlayer, searchDepth - 1, alpha, beta);
+            ScoredMove scoredMove = minValue(board, maxPlayer, depth - 1, alpha, beta);
 
-            if(score > bestScore) {
-
-                bestScore = score;
-                bestMove = move.getMove();
-
+            if(scoredMove.getValue() > bestMove.getValue()) {
+                bestMove.setValue(scoredMove.getValue());
+                bestMove.setMove(move.getMove());
             }
 
             board.undoLastMove(move.getMove());
 
-            if(bestScore >= beta)
+            if(bestMove.getValue() > alpha)
+                alpha = bestMove.getValue();
+
+            if(bestMove.getValue() >= beta)
                 return bestMove;
 
-            if(bestScore > alpha)
-                alpha = bestScore;
+        }
+
+        return bestMove;
+
+    }
+
+    private ScoredMove minValue(Board board, int maxPlayer, int depth, double alpha, double beta){
+
+        if(cutoffTest(board, depth))
+            return new ScoredMove(null, Evaluator.evaluation(board, maxPlayer));
+
+        List<ScoredMove> sortedMoves = sortMoves(board, board.generateNextMoves());
+
+        double minScore = Integer.MAX_VALUE;
+        ScoredMove bestMove = new ScoredMove(null, minScore);
+
+        for(ScoredMove move : sortedMoves){
+
+            board.makeMove(move.getMove());
+            ScoredMove scoredMove = maxValue(board, maxPlayer, depth - 1, alpha, beta);
+
+            if(scoredMove.getValue() < bestMove.getValue()) {
+                bestMove.setValue(scoredMove.getValue());
+                bestMove.setMove(move.getMove());
+            }
+
+            board.undoLastMove(move.getMove());
+
+            if(bestMove.getValue() < beta)
+                beta = bestMove.getValue();
+
+            if(bestMove.getValue() <= alpha)
+                return bestMove;
+
 
         }
 
@@ -55,75 +102,9 @@ public class AlphaBetaWithMoveOrderingAI implements AIPlayer{
     }
 
 
-    private double maxValue(Board board, int maxPlayer, int depth, double alpha, double beta){
-
-        if(cutoffTest(board, depth))
-            return Evaluator.evaluation(board, maxPlayer);
-
-        List<Move> moves = board.generateNextMoves();
-        List<ScoredMove> sortedMoves = sortMoves(board, moves);
-
-        double maxScore = Integer.MIN_VALUE;
-
-        for(ScoredMove move : sortedMoves){
-
-            board.makeMove(move.getMove());
-            double score = minValue(board, maxPlayer, depth - 1, alpha, beta);
-
-            if(score > maxScore)
-                maxScore = score;
-
-            board.undoLastMove(move.getMove());
-
-            if(maxScore > alpha)
-                alpha = maxScore;
-
-            if(maxScore >= beta)
-                return maxScore;
-
-        }
-
-        return maxScore;
-
-    }
-
-    private double minValue(Board board, int maxPlayer, int depth, double alpha, double beta){
-
-        if(cutoffTest(board, depth))
-            return Evaluator.evaluation(board, maxPlayer);
-
-        List<Move> moves = board.generateNextMoves();
-        List<ScoredMove> sortedMoves = sortMoves(board, moves);
-
-        double minScore = Integer.MAX_VALUE;
-
-        for(ScoredMove move : sortedMoves){
-
-            board.makeMove(move.getMove());
-            double score = maxValue(board, maxPlayer, depth - 1, alpha, beta);
-
-            if(score < minScore)
-                minScore = score;
-
-            board.undoLastMove(move.getMove());
-
-            if(minScore < beta)
-                beta = minScore;
-
-            if(minScore <= alpha)
-                return minScore;
-
-
-        }
-
-        return minScore;
-
-    }
-
-
     private boolean cutoffTest(Board board, int depth){
 
-        return depth <= 1 || board.isGameFinished();
+        return depth <= 0 || board.isGameFinished();
 
     }
 
