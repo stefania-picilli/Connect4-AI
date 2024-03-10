@@ -7,13 +7,14 @@ import java.util.List;
 
 public class Evaluator {
 
-    /*private static final int ONE_DISC_VALUE = 10;
-    private static final int TWO_DISC_VALUE = 40;
-    private static final int THREE_DISC_VALUE = 200;*/
+    private static final int ONE_DISC_VALUE = 10;
+    private static final int TWO_DISC_VALUE = 50;
+    private static final int THREE_DISC_VALUE = 200;
 
-    public static final int ONE_DISC_VALUE = 10;
-    public static final int TWO_DISC_VALUE = 50;
-    public static final int THREE_DISC_VALUE = 200;
+    private static final int WIN_VALUE = 10000;
+    private static final int TIE_VALUE = 5000;
+    private static final int LOSE_VALUE = 0;
+
 
     public static double evaluation(Board board, int maxPlayer){
 
@@ -24,13 +25,7 @@ public class Evaluator {
         else
             minPlayer = Board.PLAYER_A;
 
-
-        //i pesi da usare, per stimare il guadagno atteso di max, cambiano sulla base di chi deve fare la prossima mossa nello stato raggiunto
-
-        if(board.getNextPlayer() == maxPlayer)
-            return evaluateForPlayer(board, maxPlayer) - (0.4 * evaluateForPlayer(board, minPlayer));
-
-        return evaluateForPlayer(board, maxPlayer) - (0.6 * evaluateForPlayer(board, minPlayer));
+        return (evaluateForPlayer(board, maxPlayer)) - (evaluateForPlayer(board, minPlayer));
 
     }
 
@@ -38,16 +33,13 @@ public class Evaluator {
 
         if(board.isGameFinished()){
 
-            //aggiungere valore q per gestire il caso di grandi dimensioni della matrice
-            //(solo se valori m e n della board possono essere cambiati)
-
             if(board.getWinner() == player)
-                return 5000; //VALORE VITTORIA
+                return WIN_VALUE;
 
             if(board.getWinner() == Board.NONE)
-                return 2000; //VALORE PAREGGIO
+                return TIE_VALUE;
 
-            return 0; //VALORE SCONFITTA
+            return LOSE_VALUE;
 
         }
 

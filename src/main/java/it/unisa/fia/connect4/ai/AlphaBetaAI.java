@@ -67,6 +67,7 @@ public class AlphaBetaAI implements AIPlayer{
         if(cutoffTest(board, depth))
             return new ScoredMove(null, Evaluator.evaluation(board, maxPlayer));
 
+
         List<Move> moves = board.generateNextMoves();
         double minScore = Integer.MAX_VALUE;
         ScoredMove bestMove = new ScoredMove(null, minScore);

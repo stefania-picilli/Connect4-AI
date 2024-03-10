@@ -6,7 +6,6 @@ import it.unisa.fia.connect4.model.Move;
 public interface AIPlayer {
 
     public Move generateMove(Board board, int player);
-
     public int getSearchDepth();
 
 }
