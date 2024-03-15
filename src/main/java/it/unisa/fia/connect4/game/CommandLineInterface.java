@@ -80,7 +80,7 @@ public class CommandLineInterface {
 
             System.out.println();
             printSeparationLine();
-            System.out.println("Input non valido. Riprova");
+            System.out.println("Input non valido. Riprova.");
             printSeparationLine();
 
         }
@@ -148,7 +148,7 @@ public class CommandLineInterface {
 
             System.out.println();
             printSeparationLine();
-            System.out.println("Input non valido. Riprova");
+            System.out.println("Input non valido. Riprova.");
             printSeparationLine();
             System.out.println();
 
