@@ -107,5 +107,11 @@ public class Connect4Game {
 
     }
 
+    public void printBoard(){
+
+        board.printBoard();
+
+    }
+
 
 }

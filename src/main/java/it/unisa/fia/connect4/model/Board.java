@@ -341,9 +341,11 @@ public class Board {
     }
 
 
+
+
     public void printBoard(){
 
-        printTopMessage();
+        //printTopMessage();
 
         for(int i = 0; i < rows; i++) {
             System.out.println();
@@ -351,9 +353,9 @@ public class Board {
                 System.out.print(" | ");
 
                 if(board[i][j] == Board.PLAYER_A)
-                    System.out.print("W");
+                    System.out.print(Board.PLAYER_A_PIECE);
                 else if(board[i][j] == Board.PLAYER_B)
-                    System.out.print("O");
+                    System.out.print(Board.PLAYER_B_PIECE);
                 else
                     System.out.print(" ");
 
